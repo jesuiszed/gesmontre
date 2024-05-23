@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="templatemontre.html">
+<head>
+    <meta charset="utf-8">
+    <title>Liste des montres</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        header, footer {
+            background-color: #f2f2f2;
+            padding: 10px;
+            text-align: center;
+        }
+        main {
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <main>
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Description</th>
+                <th scope="col">Prix</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="montre : ${montreVue}">
+                <td th:text="${montre.id}"></td>
+                <td th:text="${montre.nom}"></td>
+                <td th:text="${montre.description}"></td>
+                <td th:text="${montre.price}"></td>
+                <td>
+                    <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette montre ?')" th:href="@{deletemontre(id=${montre.id}, page=${currentPage}, size=${size})}">Supprimer</a>
+                    <a th:href="@{'editmontre?id=' + ${montre.id}}">Éditer</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <ul class="nav nav-pills">
+            <li th:each="page,status:${pages}">
+                <a th:class="${status.index==currentPage?'btn btn-primary':'btn'}" th:href="@{montreList(page=${status.index}, size=${size})}" th:text="${status.index}"></a>
+            </li>
+        </ul>
+
+    </main>
+</div>
+<footer>
+    <a th:href="@{Createmontre}">Créer une montre</a>
+</footer>
+</body>
+</html>

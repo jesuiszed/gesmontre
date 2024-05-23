@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="templatecategorie.html">
+<head>
+    <meta charset="utf-8">
+    <title>Liste des categorie</title>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <main>
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">categorie</th>
+                <th scope="col">Actions</th> <!-- Nouvelle colonne pour les actions -->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="categorie : ${categorieVue}">
+                <td th:text="${categorie.categorie}"></td>
+                <td>
+                    <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce categorie ?')"
+                       th:href="@{deletecategorie(id=${categorie.id}, page=${currentPage}, size=${size})}">Delete</a>
+                    <a th:href="@{'editcategorie?id=' + ${categorie.id}}">Editer</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <ul class="nav nav-pills">
+            <li th:each="page,status:${pages}">
+                <a th:class="${status.index==currentPage?'btn btn-primary':'btn'}"
+                   th:href="@{categorieList(page=${status.index}, size=${size})}"
+                   th:text="${status.index}"></a>
+            </li>
+        </ul>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="templateOrder1.html">
+<head>
+    <meta charset="utf-8">
+    <title>Liste des Commandes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        header, footer {
+            background-color: #f2f2f2;
+            padding: 10px;
+            text-align: center;
+        }
+        main {
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <main>
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Date de création</th>
+                <th scope="col">État de la commande</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${Order1Vue}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${#dates.format(order.createdAt,'yyyy-MM-dd')}"></td>
+                <td th:text="${order.orderState}"></td>
+                <td>
+                    <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')"
+                       th:href="@{deleteOrder1(id=${order.id}, page=${currentPage}, size=${size})}">Supprimer</a>
+                    <a th:href="@{'editOrder1?id=' + ${order.id}}">Éditer</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <ul class="nav nav-pills">
+            <li th:each="page,status:${pages}">
+                <a th:class="${status.index==currentPage?'btn btn-primary':'btn'}"
+                   th:href="@{Order1List(page=${status.index}, size=${size})}"
+                   th:text="${status.index}"></a>
+            </li>
+        </ul>
+    </main>
+</div>
+
+
+</body>
+</html>
